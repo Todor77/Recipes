@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RecipesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ingredient">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="fk_ingredients" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="quantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="recipe" Relationship="Self.FK_1" FromRole="ingredient" ToRole="recipe" />
+  </EntityType>
+  <EntityType Name="recipe">
+    <Key>
+      <PropertyRef Name="ingredients" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ingredients" Type="Int32" Nullable="false" />
+    <Property Name="done" Type="Boolean" />
+    <Property Name="favourites" Type="Boolean" />
+    <NavigationProperty Name="ingredients1" Relationship="Self.FK_1" FromRole="recipe" ToRole="ingredient" />
+  </EntityType>
+  <Association Name="FK_1">
+    <End Role="recipe" Type="Self.recipe" Multiplicity="1" />
+    <End Role="ingredient" Type="Self.ingredient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="recipe">
+        <PropertyRef Name="ingredients" />
+      </Principal>
+      <Dependent Role="ingredient">
+        <PropertyRef Name="fk_ingredients" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RecipesEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ingredients" EntityType="Self.ingredient" />
+    <EntitySet Name="recipes" EntityType="Self.recipe" />
+    <AssociationSet Name="FK_1" Association="Self.FK_1">
+      <End Role="recipe" EntitySet="recipes" />
+      <End Role="ingredient" EntitySet="ingredients" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

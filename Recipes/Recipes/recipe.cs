@@ -23,7 +23,7 @@ namespace Recipes
         public int Id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-        public string ingredients { get; set; }
+        public int ingredients { get; set; }
         public Nullable<bool> done { get; set; }
         public Nullable<bool> favourites { get; set; }
     

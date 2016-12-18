@@ -15,7 +15,7 @@ namespace Recipes
     public partial class ingredient
     {
         public int Id { get; set; }
-        public string fk_ingredients { get; set; }
+        public int fk_ingredients { get; set; }
         public string name { get; set; }
         public int quantity { get; set; }
     
