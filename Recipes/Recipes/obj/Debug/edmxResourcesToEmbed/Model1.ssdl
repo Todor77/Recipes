@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RecipeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Ingredient">
+    <Key>
+      <PropertyRef Name="IngredientID" />
+    </Key>
+    <Property Name="IngredientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Quantity" Type="int" />
+  </EntityType>
+  <EntityType Name="Recipe">
+    <Key>
+      <PropertyRef Name="RecipeID" />
+    </Key>
+    <Property Name="RecipeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" />
+    <Property Name="Done" Type="bit" />
+    <Property Name="Favourites" Type="bit" />
+  </EntityType>
+  <EntityType Name="RecipeIngredient">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="RecipeID" Type="int" Nullable="false" />
+    <Property Name="IngredientID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_RecipeIngredient_ToTable">
+    <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+    <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Recipe">
+        <PropertyRef Name="RecipeID" />
+      </Principal>
+      <Dependent Role="RecipeIngredient">
+        <PropertyRef Name="RecipeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RecipeIngredient_ToTable_1">
+    <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="1" />
+    <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ingredient">
+        <PropertyRef Name="IngredientID" />
+      </Principal>
+      <Dependent Role="RecipeIngredient">
+        <PropertyRef Name="IngredientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RecipeModelStoreContainer">
+    <EntitySet Name="Ingredient" EntityType="Self.Ingredient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_RecipeIngredient_ToTable" Association="Self.FK_RecipeIngredient_ToTable">
+      <End Role="Recipe" EntitySet="Recipe" />
+      <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RecipeIngredient_ToTable_1" Association="Self.FK_RecipeIngredient_ToTable_1">
+      <End Role="Ingredient" EntitySet="Ingredient" />
+      <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

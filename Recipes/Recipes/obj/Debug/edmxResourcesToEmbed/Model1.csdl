@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RecipeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Ingredient">
+    <Key>
+      <PropertyRef Name="IngredientID" />
+    </Key>
+    <Property Name="IngredientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" />
+    <NavigationProperty Name="RecipeIngredients" Relationship="Self.FK_RecipeIngredient_ToTable_1" FromRole="Ingredient" ToRole="RecipeIngredient" />
+  </EntityType>
+  <EntityType Name="Recipe">
+    <Key>
+      <PropertyRef Name="RecipeID" />
+    </Key>
+    <Property Name="RecipeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Done" Type="Boolean" />
+    <Property Name="Favourites" Type="Boolean" />
+    <NavigationProperty Name="RecipeIngredients" Relationship="Self.FK_RecipeIngredient_ToTable" FromRole="Recipe" ToRole="RecipeIngredient" />
+  </EntityType>
+  <EntityType Name="RecipeIngredient">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="RecipeID" Type="Int32" Nullable="false" />
+    <Property Name="IngredientID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Ingredient" Relationship="Self.FK_RecipeIngredient_ToTable_1" FromRole="RecipeIngredient" ToRole="Ingredient" />
+    <NavigationProperty Name="Recipe" Relationship="Self.FK_RecipeIngredient_ToTable" FromRole="RecipeIngredient" ToRole="Recipe" />
+  </EntityType>
+  <Association Name="FK_RecipeIngredient_ToTable_1">
+    <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="1" />
+    <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ingredient">
+        <PropertyRef Name="IngredientID" />
+      </Principal>
+      <Dependent Role="RecipeIngredient">
+        <PropertyRef Name="IngredientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RecipeIngredient_ToTable">
+    <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+    <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Recipe">
+        <PropertyRef Name="RecipeID" />
+      </Principal>
+      <Dependent Role="RecipeIngredient">
+        <PropertyRef Name="RecipeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RecipeEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
+    <EntitySet Name="Recipes" EntityType="Self.Recipe" />
+    <EntitySet Name="RecipeIngredients" EntityType="Self.RecipeIngredient" />
+    <AssociationSet Name="FK_RecipeIngredient_ToTable_1" Association="Self.FK_RecipeIngredient_ToTable_1">
+      <End Role="Ingredient" EntitySet="Ingredients" />
+      <End Role="RecipeIngredient" EntitySet="RecipeIngredients" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RecipeIngredient_ToTable" Association="Self.FK_RecipeIngredient_ToTable">
+      <End Role="Recipe" EntitySet="Recipes" />
+      <End Role="RecipeIngredient" EntitySet="RecipeIngredients" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
